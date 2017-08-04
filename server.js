@@ -7,6 +7,8 @@
 var app = require('./app');
 var debug = require('debug')('nodejs-regular-webapp2:server');
 var http = require('http');
+var https = require('https');
+var selfsigned = require('selfsigned');
 
 /**
  * Get port from environment and store in Express.
@@ -18,8 +20,14 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
+function createHttpsServer(app) {
+  var attrs = [{ name: 'commonName', value: 'myapp.com' }];
+  var certificate = selfsigned.generate(attrs, { days: 365 });
+  var options = { key: certificate.private, cert: certificate.cert };
+  return https.createServer(options, app);
+}
 
-var server = http.createServer(app);
+var server = (process.env.SECURE) ? createHttpsServer(app) : http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
