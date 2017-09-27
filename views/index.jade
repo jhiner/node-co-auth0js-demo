@@ -4,7 +4,9 @@ block content
   div#main.pure-g
     div#index.pure-u-1.l-box
       h1= title
-      p Welcome to the Cross Origin Auth demo.
+      p Welcome to the Cross Origin Auth demo. 
+      p
+        a(class="github-button", href="https://github.com/jhiner/node-co-auth0js-demo/fork", data-icon="octicon-repo-forked", data-size="large", aria-label="Fork ntkme/github-buttons on GitHub") Fork
       br
       #msg
       br
@@ -13,10 +15,10 @@ block content
           div#pure-control-group
           div#pure-u-1.pure-u-md-1-3
             label(for="username") Username
-            input(type="text", class="pure-u-1-6", name="username", id="username" value="j@j.com")
+            input(type="text", class="pure-u-1-6", name="username", id="username" value="demo@user.com")
           div#pure-u-1.pure-u-md-1-3
             label(for="password") Password
-            input(type="password", name="password", class="pure-u-1-6", id="password" value="ABcd1234!")
+            input(type="password", name="password", class="pure-u-1-6", id="password" value="demouser")
       p
         submit#signinButton.pure-button.pure-button-primary(onclick="signIn()") Login
         &nbsp;
