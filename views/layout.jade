@@ -3,6 +3,8 @@ html
   head
     title= title
     script(src="https://cdn.auth0.com/js/auth0/8.7.0/auth0.min.js")
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <link rel="stylesheet" href="/main.css">
   body
     block content
 
@@ -34,7 +36,7 @@ html
        webAuth.authorize({
         redirectUri: '#{env.AUTH0_CALLBACK_URL}',
         responseType: 'code',
-        audience: 'http://todoapi2.api',
+        audience: '#{env.AUTH0_API_IDENTIFIER}',
         scope: 'openid profile read:todo offline_access',
         state: 'foobar',
         prompt: 'none'

@@ -19,12 +19,21 @@ router.get('/logout', function(req, res){
 });
 
 router.get('/loggedOut', function(req, res){
-  res.json({status: 'logged out'});
+  res.render('index', { title: 'NodeJS Cross-origin Auth Demo' , loggedout: true });
 });
 
 router.post('/callback', function(req, res) {
   res.redirect(req.session.returnTo || '/user');
 });
+
+router.get('/silent-callback.html', function(req, res) {
+  res.render('silent-callback');
+});
+
+router.get('/co-verify.html', function(req, res) {
+  res.render('co-verify');
+});
+
 
 router.get('/callback',
   passport.authenticate('auth0', {
@@ -33,6 +42,19 @@ router.get('/callback',
   function(req, res) {
     res.redirect(req.session.returnTo || '/user');
   });
+
+router.get('/error', function(req, res) {
+  var error = req.flash('error');
+  var error_description = req.flash('error_description');
+  console.log(error);
+  console.log(error_description);
+  req.logout();
+  res.render('error', {
+    error: error,
+    error_description: error_description,
+  });
+});
+
 
 
 router.get('/unauthorized', function(req, res) {

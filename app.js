@@ -6,6 +6,7 @@ var dotenv = require('dotenv');
 var passport = require('passport');
 var Auth0Strategy = require('passport-auth0');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+const flash = require('req-flash');
 
 dotenv.load();
 
