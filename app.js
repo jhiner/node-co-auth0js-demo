@@ -1,10 +1,10 @@
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-var session = require('express-session');
-var dotenv = require('dotenv');
-var passport = require('passport');
-var Auth0Strategy = require('passport-auth0');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const session = require('express-session');
+const dotenv = require('dotenv');
+const passport = require('passport');
+const Auth0Strategy = require('passport-auth0');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 const flash = require('req-flash');
 
@@ -12,7 +12,6 @@ dotenv.load();
 
 var routes = require('./routes/index');
 var user = require('./routes/user');
-
 
 // This will configure Passport to use Auth0
 var strategy = new Auth0Strategy({
@@ -55,7 +54,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.set('view options', { pretty: true });
 
-
+app.use(session({
+  secret: 'yourSessionSecret',
+  resave: true,
+  saveUninitialized: true
+}));
+app.use(flash());
 app.use(logger('dev'));
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: false }));
@@ -69,9 +73,19 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Handle auth failure error messages
+app.use(function(req, res, next) {
+ if (req && req.query && req.query.error) {
+   req.flash('error', req.query.error);
+ }
+ if (req && req.query && req.query.error_description) {
+   req.flash('error_description', req.query.error_description);
+ }
+ next();
+});
+
 app.use('/', routes);
 app.use('/user', user);
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -99,8 +113,8 @@ if (app.get('env') === 'development') {
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
-    message: err.message,
-    error: {}
+    error: err.message,
+    error_description: ''
   });
 });
 

@@ -12,7 +12,7 @@ router.get('/', ensureLoggedIn, function(req, res, next) {
   res.render('user', {
     user: req.user,
     apiData: apiData,
-    title: 'NodeJS Cross-origin Auth Demo'
+    title: 'Cross Origin Auth Demo'
   });
 });
 

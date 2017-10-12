@@ -1,11 +1,12 @@
-var express = require('express');
-var passport = require('passport');
-var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
-var router = express.Router();
+const express = require('express');
+const passport = require('passport');
+const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
+const router = express.Router();
+const flash = require('req-flash');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'NodeJS Cross-origin Auth Demo' });
+  res.render('index', { title: 'Cross Origin Auth Demo' });
 });
 
 router.get('/login',
@@ -19,21 +20,16 @@ router.get('/logout', function(req, res){
 });
 
 router.get('/loggedOut', function(req, res){
-  res.render('index', { title: 'NodeJS Cross-origin Auth Demo' , loggedout: true });
+  res.render('index', { title: 'Cross Origin Auth Demo' , loggedout: true });
 });
 
 router.post('/callback', function(req, res) {
   res.redirect(req.session.returnTo || '/user');
 });
 
-router.get('/silent-callback.html', function(req, res) {
-  res.render('silent-callback');
-});
-
 router.get('/co-verify.html', function(req, res) {
   res.render('co-verify');
 });
-
 
 router.get('/callback',
   passport.authenticate('auth0', {
@@ -54,8 +50,6 @@ router.get('/error', function(req, res) {
     error_description: error_description,
   });
 });
-
-
 
 router.get('/unauthorized', function(req, res) {
   res.render('unauthorized');
